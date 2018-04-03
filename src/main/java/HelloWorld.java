@@ -13,9 +13,7 @@ public class HelloWorld {
             }
             System.out.println();
         }
-        String input="이천오백삼십만사천이백육십칠";
-        System.out.println(input);
-        System.out.println(hangulToNum(input));
+
 
 
     }

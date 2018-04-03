@@ -1,13 +1,52 @@
-//java 플러그인을 추가한다.
- apply plugin: 'java'
- apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+
 
 sourceSets{
     main{
-    output.classesDir "$buildDir/clasees"
+        output.classesDir "$buildDir/classes"
     }
 }
+
+
 task(run, dependsOn: 'classes', type: JavaExec){
-    main="HelloWorld"
-    classpath = sourceSets.main.runtimeClasspath
+    main= "HelloWorld"
+    classpath= sourceSets.main.runtimeClasspath
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0",
+            'junit:junit:4.12'
+    )
+
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+
+}
+// START SNIPPET test-report
+subprojects {
+    apply plugin: 'java'
+
+// END SNIPPET test-report
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+// START SNIPPET test-report
+    // Disable the test report for the individual test task
+    test {
+        reports.html.enabled = true
+    }
+}
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+
+    reportOn subprojects*.test
 }
